@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+jobs:
+- job: Restart_Server
+  steps:
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: 'Free Trial(601539bb-01ce-45ae-aeaa-fefac444af21)'
+      ScriptType: 'InlineScript'
+      Inline: |
+        $vmName = "VM1"
+        $resourceGroupName = "RG1"
+        
+        Stop-AzVM -ResourceGroupName $resourceGroupName -Name $vmName -Force -NoWait
+        
+        Start-AzVM -ResourceGroupName $resourceGroupName -Name $vmName
+      preferredAzurePowerShellVersion: '2.6.0'
